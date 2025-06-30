@@ -36,13 +36,13 @@ private:
     Ui::typingTestWindow *ui;
     QMainWindow *mainWin;
 
-    //key mapping
+
     QMap<QChar, QPushButton*> keyButtons;
     QMap<int, QPushButton*> specialKeyButtons;
     void initializeKeyMapping();
     bool capsLockOn = false;
 
-    //typing logic
+
     QString targetText;
     QString typedText;
     int currentIndex = 0;
@@ -53,19 +53,19 @@ private:
     QStringList sentenceList;
     int currentSentenceIndex = 0;
 
-    // Timer & test logic
+
     QTimer* testTimer = nullptr;
     QString selectedDifficulty;
-    int selectedDuration = 0;  // in seconds
+    int selectedDuration = 0;
     int remainingTime = 0;
 
-    // 🧠 Methods for logic
-    void loadTextForTest();         // Load text based on difficulty
-    void startTest();               // Starts timer and resets counters
-    void updateTypingDisplay();     // Color-code the typing progress
-    void showResult();              // Show result in popup
 
-    // void restartTest(); --> for restarting test
+    void loadTextForTest();
+    void startTest();
+    void updateTypingDisplay();
+    void showResult();
+
+    // void restartTest();
 };
 
 #endif // TYPINGTESTWINDOW_H

@@ -14,7 +14,6 @@ typingTestWindow::typingTestWindow(QWidget *parent)
     ui->setupUi(this);
     initializeKeyMapping();
 
-    // Prevent spacebar issues
     ui->pushButton->setFocusPolicy(Qt::NoFocus);
     this->setFocusPolicy(Qt::StrongFocus);
     this->setFocus();
@@ -52,7 +51,7 @@ void typingTestWindow::loadTextForTest() {
         filePath = ":/texts/resources/rexts/hard.txt";
 
     QFile file(filePath);
-    sentenceList.clear(); // Clear old data
+    sentenceList.clear();
 
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QTextStream in(&file);

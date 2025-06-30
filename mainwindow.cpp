@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     ui->comboBox_time->setCurrentIndex(1);
-    ui->radioButton_easy->setChecked(true); // Default to Easy
+    ui->radioButton_easy->setChecked(true);
 
 }
 
