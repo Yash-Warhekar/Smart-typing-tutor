@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/texts">
+        <file>resources/rexts/easy.txt</file>
+        <file>resources/rexts/hard.txt</file>
+        <file>resources/rexts/medium.txt</file>
+    </qresource>
+</RCC>
