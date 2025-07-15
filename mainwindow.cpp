@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "learnwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -35,6 +36,15 @@ void MainWindow::on_pushButton_start_clicked()
     int selectedDuration = timeText.split(" ").first().toInt();
     testWindow->initializeTest(selectedDifficulty, selectedDuration);
     testWindow->show();
+    this->hide();
+
+}
+
+
+void MainWindow::on_pushButton_blog_clicked()
+{
+    LearnWindow *learnWin = new LearnWindow(this);
+    learnWin->show();
     this->hide();
 
 }

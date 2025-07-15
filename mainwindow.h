@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "typingtestwindow.h"
+#include "learnwindow.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -20,6 +21,8 @@ public:
 
 private slots:
     void on_pushButton_start_clicked();
+
+    void on_pushButton_blog_clicked();
 
 private:
     Ui::MainWindow *ui;

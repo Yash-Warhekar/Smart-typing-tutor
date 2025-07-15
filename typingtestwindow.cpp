@@ -66,7 +66,7 @@ void typingTestWindow::loadTextForTest() {
     if (!sentenceList.isEmpty()) {
         targetText = sentenceList[currentSentenceIndex];
     } else {
-        targetText = "Default fallback text.";
+        targetText = "Default completion text which is loaded if the is completed.";
     }
 
     ui->textLabel->setText(targetText);
@@ -79,6 +79,12 @@ void typingTestWindow::startTest() {
     testTimer = new QTimer(this);
     connect(testTimer, &QTimer::timeout, this, &typingTestWindow::updateTimer);
     testTimer->start(1000);
+    cursorTimer = new QTimer(this);
+    connect(cursorTimer, &QTimer::timeout, this, [=]() {
+        cursorVisible = !cursorVisible;
+        updateTypingDisplay();
+    });
+    cursorTimer->start(500);
 
     updateTypingDisplay();
 }
@@ -108,7 +114,7 @@ void typingTestWindow::keyPressEvent(QKeyEvent *event) {
 
     if (specialKeyButtons.contains(key)) {
         QPushButton *btn = specialKeyButtons[key];
-        btn->setStyleSheet("background-color: yellow");
+        btn->setStyleSheet("background-color: blue");
         QTimer::singleShot(150, [btn]() {
             btn->setStyleSheet("");
         });
@@ -122,6 +128,25 @@ void typingTestWindow::keyPressEvent(QKeyEvent *event) {
     if (key == Qt::Key_Return || key == Qt::Key_Enter) {
         return;
     }
+
+    if (key == Qt::Key_Backspace) {
+        if (currentIndex > 0) {
+            currentIndex--;
+            QChar removedChar = typedText.at(typedText.length() - 1);
+            typedText.chop(1);
+
+            QChar expectedChar = targetText[currentIndex];
+            if (removedChar == expectedChar) {
+                correctCount--;
+            } else {
+                typoCount--;
+            }
+
+            updateTypingDisplay();
+        }
+        return;
+    }
+
 
     if (text.isEmpty()) return;
 
@@ -154,7 +179,7 @@ void typingTestWindow::keyPressEvent(QKeyEvent *event) {
         } else {
             typedText.clear();
             targetText.clear();
-            ui->textLabel->setText("🎉 Great! You've typed all sentences.");
+            ui->textLabel->setText(" Great! You've typed all sentences.wait results will be shown");
             ui->typedTextLabel->clear();
         }
         return;
@@ -164,7 +189,12 @@ void typingTestWindow::keyPressEvent(QKeyEvent *event) {
 
     if (keyButtons.contains(pressedChar)) {
         QPushButton *btn = keyButtons[pressedChar];
-        btn->setStyleSheet("background-color: yellow");
+        QChar expectedChar = targetText[currentIndex - 1];
+        if (pressedChar == expectedChar) {
+            btn->setStyleSheet("background-color: green; color: white;");
+        } else {
+            btn->setStyleSheet("background-color: red; color: white;");
+        }
         QTimer::singleShot(150, [btn]() {
             btn->setStyleSheet("");
         });
@@ -178,10 +208,12 @@ void typingTestWindow::updateTypingDisplay() {
     ui->textLabel->setText(
         "<span style='color:green'>" + correct + "</span><span>" + remaining + "</span>"
         );
-    ui->typedTextLabel->setText(typedText);
+     QString cursor = cursorVisible ? "|" : " ";
+    ui->typedTextLabel->setText(typedText+cursor);
 }
 
 void typingTestWindow::showResult() {
+    if (cursorTimer) cursorTimer->stop();
     double accuracy = correctCount + typoCount > 0 ?
                           (double)correctCount / (correctCount + typoCount) * 100.0 : 0;
     int wpm = (correctCount / 5.0) / (selectedDuration / 60.0);
@@ -192,6 +224,8 @@ void typingTestWindow::showResult() {
                          .arg(typoCount);
 
     QMessageBox::information(this, "Test Result", result);
+
+
 }
 
 
@@ -322,3 +356,23 @@ void typingTestWindow::initializeKeyMapping() {
         keyButtons['~'] = ui->button_Backtick;
 
 }
+
+
+void typingTestWindow::on_restartButton_clicked() {
+
+        if (testTimer) testTimer->stop();
+
+        correctCount = 0;
+        typoCount = 0;
+        typedText.clear();
+        currentIndex = 0;
+        currentSentenceIndex = 0;
+
+        loadTextForTest();
+        remainingTime = selectedDuration;
+        updateTimer();
+        startTest();
+
+        ui->typedTextLabel->clear();
+}
+

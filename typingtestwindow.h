@@ -31,7 +31,8 @@ protected:
 private slots:
     void on_pushButton_clicked();
     void updateTimer();
-
+    void on_restartButton_clicked();
+    
 private:
     Ui::typingTestWindow *ui;
     QMainWindow *mainWin;
@@ -65,7 +66,11 @@ private:
     void updateTypingDisplay();
     void showResult();
 
-    // void restartTest();
+
+    //for keyboard cursor(variables)
+    bool cursorVisible = true;
+    QTimer *cursorTimer = nullptr;
+
 };
 
 #endif // TYPINGTESTWINDOW_H

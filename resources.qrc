@@ -4,4 +4,14 @@
         <file>resources/rexts/hard.txt</file>
         <file>resources/rexts/medium.txt</file>
     </qresource>
+    <qresource prefix="/images">
+        <file>resources/image_assect_typing/hand-keyboard.jpg</file>
+        <file>resources/image_assect_typing/keyboard_touchtyping.png</file>
+        <file>resources/image_assect_typing/why_touchtyping.jpg</file>
+        <file>resources/image_assect_typing/head_image.jpeg</file>
+        <file>resources/image_assect_typing/persontouchtype.jpg</file>
+        <file>resources/image_assect_typing/productivity.jpg</file>
+        <file>resources/image_assect_typing/ProperPosture.jpg</file>
+        <file>resources/image_assect_typing/typingmistake.jpg</file>
+    </qresource>
 </RCC>
